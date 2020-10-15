@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Index</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+      <script src="{% static 'js/script.js' %}"></script>
+    </head>
+    <body>
+        <h1>Register</h1>
+        <form action='/process_register' method='POST'>
+            {% csrf_token %}
+            First Name: <input type='text' name='first_name'>
+            Last Name: <input type='text' name='last_name'>
+            Email: <input type='text' name='email'>
+            Password: <input type='text' name='password'>
+            Confirm password: <input type='text' name='confirm_password'>
+            <input type='submit' value='Register'>
+          </form>
+
+          {% if messages %}
+          <ul class="messages">    
+              {% for message in messages %}    
+                  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+              {% endfor %}
+          </ul>
+          {% endif %}
+
+        <h1>Login</h1>
+        <form action='/process_login' method='post'>
+            {% csrf_token %}
+            Email: <input type='text' name='email'>
+            Password: <input type='text' name='password'>
+            <input type='submit' value='Log In'>
+        </form>
+  
+    </body>   
+   </html>

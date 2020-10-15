@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Index</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+      <script src="{% static 'js/script.js' %}"></script>
+    </head>
+    <body>
+        <h3>Welcome {{user.first_name}}</h3>
+        <a href="/logout">Logout</a>
+        <hr>
+<!--books_upload comes from models.py -- User class -- one to many field-->
+<!--books_upload comes from models.py -- User class -- one to many field-->
+        {% if get_book in user.books_uploaded.all %}
+<!--books_upload comes from models.py -- User class -- one to many field-->
+<!--books_upload comes from models.py -- User class -- one to many field-->
+        <form action="/edit_book" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="hidden_book_id" value={{get_book.id}}>
+            <input type="text" name="title" id="title" value="{{ get_book.title }}">
+            <p>Added by: {{ get_book.uploaded_by.first_name  }}</p>
+            <p>Added on: {{ get_book.created_at }}</p>
+            <p>Last Update on: {{ get_book.updated_at }}</p>
+            <input type="text" name="desc" id="desc" value="{{get_book.desc}}">
+            <br>
+            <button type="submit">Update</button>
+         </form>
+         
+         <form action="/del_book" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="hidden_book_id" value={{get_book.id}}>
+            <button type="submit">Delete</button>
+         </form>
+                   
+        {% else %}
+        <h1>ID:{{get_book.id}} {{ get_book.title }}</h1>
+        <p>Added by: {{ get_book.uploaded_by.first_name  }}</p>
+        <p>Added on: {{ get_book.created_at }}</p>
+        <p>Last Update on: {{ get_book.updated_at }}</p>
+        <p>Description: {{ get_book.desc }}</p>
+        {% endif %}
+
+        <h3>Users Who Like This Book</h3>
+        {% for single_user in get_book.user_who_like.all %}
+        <ul>
+            {% if single_user.id is user.id %}
+            <li>
+                {{ single_user.first_name }} {{ single_user.last_name }} 
+                <a href="/unfav/{{get_book.id}}/{{single_user.id}}">Un-Favorite</a>
+            </li>
+            {% else %}
+            <li>
+                {{single_user.first_name}} {{single_user.last_name}}
+            </li>
+            {% endif %}
+        </ul>
+        {% endfor %}
+    
+        {% if user not in get_book.user_who_like.all %}
+        <hr>
+        <a href="/fav/{{get_book.id}}/{{user.id}}">Add to Favorites</a>
+        {% endif %}
+        </body>   
+    </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Index</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+      <script src="{% static 'js/script.js' %}"></script>
+    </head>
+    <body>
+
+        <h3>Welcome {{user.first_name}}</h3>
+        <a href="/logout">Logout</a>
+        <hr>
+        <form action="/add_book/{{user.id}}" method="POST">
+           <p>Add a Favorite Book</p>
+           {% csrf_token %}
+           <p>Title: <input type="text" name="title" /></p>
+           <p>Description: <input type="text" name="desc"/></p>
+           <button type="submit">Add</button>
+         </form>
+         <div>
+         <!--validation message-->
+         {% for message in messages %}
+                    {% if "book" in message.tags %}    
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>  
+                    {% endif %}
+         {% endfor %}
+         </div>
+         <h3>All Books</h3>
+         <ul>
+         {% for book in books %}
+            <li>
+                <p><a href='/books/{{book.id}}'>{{book.title}}</a></p>
+                <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}} )</p>
+                {% if user in book.user_who_like.all %}
+                  <i>This is one of your favorites</i>
+                  <a href="/unfav/{{book.id}}/{{user.id}}">Un-Favorite </a>
+                {% else %}
+                  <a href="/fav/{{book.id}}/{{user.id}}">Add to Favorites</a>
+                {% endif %}
+            </li>
+         {% endfor %}
+         </ul>
+    </body>   
+   </html>
+

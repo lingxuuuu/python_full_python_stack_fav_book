@@ -10,6 +10,7 @@
     <body>
 
         <h3>Welcome {{user.first_name}}</h3>
+        <a href="/favorite_books">Click here to view a list of your favorite books</a>
         <a href="/logout">Logout</a>
         <hr>
         <form action="/add_book/{{user.id}}" method="POST">

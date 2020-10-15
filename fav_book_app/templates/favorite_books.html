@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Index</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+      <script src="{% static 'js/script.js' %}"></script>
+    </head>
+    <body>
+        <table>
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>Book Description</th>
+                <th>Uploaded By</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for favorite_book in user.liked_books.all %}
+              <tr>
+                <td>{{favorite_book.title}}</td>
+                <td>{{favorite_book.desc}}</td>
+                <td>{{favorite_book.uploaded_by.first_name}} {{favorite_book.uploaded_by.last_name}}</td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+          <a href="/books">Go Back</a>
+        </div>
+      </div>
+    </body>   
+   </html>

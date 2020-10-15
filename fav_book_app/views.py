@@ -108,3 +108,9 @@ def unfav(request, book_id, user_id):
     unlike_user = User.objects.get(id=user_id)
     book_to_unfav.user_who_like.remove(unlike_user)
     return redirect('/books')
+
+def favorite_books(request):
+    context = {
+      'user': User.objects.get(id=request.session['user_id']),
+    }
+    return render(request, 'favorite_books.html', context)
